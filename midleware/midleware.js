@@ -10,7 +10,7 @@ const auth = (req,res,next)=>{
   if (isAuthenticated) {
     next();
   } else {
-    res.status(403).send('Forbidden: You are not authenticated.');
+    res.status(401).send('Forbidden: You are not authenticated.');
   }
 }
 

@@ -1,6 +1,6 @@
 const EventEmmit = require("events");
 const event = new EventEmmit();
-
+const db = require("../db/db");
 // What is the EventEmitter class in Node.js?
 // How do you create and emit custom events?
 
@@ -52,7 +52,6 @@ const deleteFunction = async (req, res) => {
     res.status(403).json(error);
   }
 };
-
 
 // Explain the use of route parameters and query strings in Express.js routing.
 const patchFunction = async (req, res) => {
@@ -154,8 +153,58 @@ const myPromise = () => {
     .catch((err) => console.log(err));
 };
 
+// myPromise();
 
-myPromise();
+const getData = async (req, res) => {
+  console.log("rendered");
+
+  try {
+    db.query("SELECT * FROM users", (error, results) => {
+      if (error) {
+        console.error("Error executing query:", error);
+        return res.status(500).send("An error occurred while fetching data.");
+      }
+
+      console.log("Results:", results);
+      res.status(200).json(results);
+    });
+  } catch (error) {
+    console.log("Unexpected error:", error);
+    res.status(500).send("An unexpected error occurred.");
+  }
+};
+
+const postUser = async (req, res) => {
+    const {id,age,name} = req.body;
+    console.log(req.body, age)
+  try {
+    // Execute the INSERT query
+    db.query(
+      `INSERT INTO users (id, name, age) VALUES (?,?,?)`,[id,name,age],
+      (error, result) => {
+        if (error) {
+          console.log("Error:", error);
+          return res
+            .status(500)
+            .json({
+              error: "An error occurred while inserting the user",
+              details: error,
+            });
+        }
+
+        // Send a success response with a simple message or some relevant data
+        console.log("Result:", result);
+        res.status(200).json("User inserted successfully");
+      }
+    );
+  } catch (error) {
+    console.log("Unexpected error:", error);
+    res
+      .status(500)
+      .json({ error: "An unexpected error occurred", details: error });
+  }
+};
+
 module.exports = {
   getFunction,
   aboutFunction,
@@ -164,4 +213,6 @@ module.exports = {
   deleteFunction,
   postFunction,
   promiseResolve,
+  getData,
+  postUser,
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const {getFunction,aboutFunction,patchFunction,putFunction,deleteFunction,postFunction, promiseResolve} = require('../controllers/controller');
+const {postUser,getFunction,aboutFunction,patchFunction,putFunction,deleteFunction,postFunction, promiseResolve, getData} = require('../controllers/controller');
 // const { auth } = require('../midleware/midleware');
 
 // example for ES6 Comman module
@@ -19,7 +19,9 @@ route.post('/cc/v1/post', postFunction)
 route.put('/cc/v1/put/:id', putFunction)
 route.patch('/cc/v1/patch/:id', patchFunction)
 route.delete('/cc/v1/delete/:id', deleteFunction)
-
 route.get('/cc/v1/promise-resolve', promiseResolve)
+
+route.get('/cc/v1/get-data', getData)
+route.post('/cc/v1/postUser', postUser)
 
 module.exports = route;

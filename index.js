@@ -2,7 +2,7 @@
 
 const express = require("express");
 const { auth } = require("./midleware/midleware");
-
+const con = require('./db/db')
 const app = express();
 
 // middleware exampl
